@@ -1,0 +1,9 @@
+{
+  "name": "test-api",
+  "description": "description",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "require-dev": {
+    "phpunit/phpunit": "*"
+  }
+}

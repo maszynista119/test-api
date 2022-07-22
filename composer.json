@@ -1,5 +1,5 @@
 {
-  "name": "test-api",
+  "name": "vendor_name/testapi",
   "description": "description",
   "minimum-stability": "stable",
   "license": "proprietary",

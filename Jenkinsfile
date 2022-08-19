@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    environment {
+        DOCKERHUB_CREDENTIALS=credentials('dockerhub')
+    }
     stages {
         stage("build") {
             steps {
@@ -13,13 +16,15 @@ pipeline {
         }
         stage("build docker image") {
             steps {
-                script {
-                    docker.withRegistry("maszynista119/testing", "dockerhub") {
-                        def customeImage = docker.build("testapi:${env.BUILD_ID}");
-                        customeImage.push();
-                    }
-                }
+				sh 'docker build -t testapi .'
+                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+				sh 'docker push bharathirajatut/nodeapp:latest'
             }
+        }
+    }
+    post {
+        always {
+            sh 'docker logout'
         }
     }
 }

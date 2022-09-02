@@ -16,10 +16,17 @@ pipeline {
         }
         stage("build docker image") {
             steps {
-				sh 'docker build -t testapi:${GIT_COMMIT} .'
-                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-                sh "docker tag testapi:${GIT_COMMIT} maszynista119/testing:${GIT_COMMIT}"
-                sh "docker push testapi:${GIT_COMMIT}"
+                script {
+                    docker.withRegistry("https://registry.hub.docker.com/v1/repositories/maszynista119/testing/tags", "dockerhub") {
+                        def customImage = docker.build("testapi:${GIT_COMMIT}")
+
+                        customImage.push()
+                    }
+                }
+			//	sh 'docker build -t testapi:${GIT_COMMIT} .'
+            //    sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+             //   sh "docker tag testapi:${GIT_COMMIT} maszynista119/testing:${GIT_COMMIT}"
+              //  sh "docker push testapi:${GIT_COMMIT}"
             }
         }
     }

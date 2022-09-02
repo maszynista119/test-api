@@ -18,6 +18,8 @@ pipeline {
             steps {
 				sh 'docker build -t testapi .'
                 sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                sh "docker tag testapi:${GIT_COMMIT} maszynista119/testing:${GIT_COMMIT}"
+                sh "docker push testapi:${GIT_COMMIT}"
             }
         }
     }

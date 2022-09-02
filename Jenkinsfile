@@ -17,7 +17,7 @@ pipeline {
         stage("build docker image") {
             steps {
                 script {
-                    docker.withRegistry("https://index.docker.io", "dockerhub") {
+                    docker.withRegistry("https://index.docker.io/v1/", "dockerhub") {
                         def customImage = docker.build("maszynista119/testing:${GIT_COMMIT}")
 
                         customImage.push()

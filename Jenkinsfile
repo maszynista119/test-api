@@ -17,7 +17,7 @@ pipeline {
         stage("build docker image") {
             steps {
 				sh 'docker build -t testapi .'
-                sh 'echo Zapalnik1! | docker login -u maszynista119 --password-stdin'
+                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
             }
         }
     }

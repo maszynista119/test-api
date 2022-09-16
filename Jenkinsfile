@@ -2,6 +2,7 @@ pipeline {
     agent any
     environment {
         DOCKERHUB_CREDENTIALS=credentials('dockerhub')
+        DOCKERHUB_ACCESS_TOKEN=credentials("dockerhubaccesstoken")
     }
     stages {
         stage("build") {
@@ -29,6 +30,7 @@ pipeline {
             steps {
                 sshagent(credentials: ['krzys-remote-app']) {
                       sh '''
+                        echo {DOCKERHUB_ACCESS_TOKEN} | docker login -u maszynista119
                         docker pull maszynista119/testing:${GIT_COMMIT}
                         docker run -p 8080:80 maszynista119/testing:${GIT_COMMIT}
                       '''

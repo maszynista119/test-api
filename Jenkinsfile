@@ -16,6 +16,7 @@ pipeline {
         }
         stage("Deploy docker image") {
             steps {
+                echo "Connecting to remote";
                 sshagent(credentials: ['krzys-remote-app']) {
                       sh '''
                         ls -l

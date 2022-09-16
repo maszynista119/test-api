@@ -32,7 +32,8 @@ pipeline {
                       sh '''
                         docker login -u maszynista119 -p ${DOCKERHUB_ACCESS_TOKEN}
                         docker pull maszynista119/testing:${GIT_COMMIT}
-                        docker run -p 8080:80 maszynista119/testing:${GIT_COMMIT}
+                        docker run -p 8081:80 maszynista119/testing:${GIT_COMMIT}
+                        docker logout
                       '''
                 }
             }

@@ -29,12 +29,7 @@ pipeline {
         stage("Deploy docker image") {
             steps {
                 sshagent(credentials: ['krzys-remote-app']) {
-                      def dockerrun = "
-                          docker login -u maszynista119 -p ${DOCKERHUB_ACCESS_TOKEN}
-                          docker pull maszynista119/testing:${GIT_COMMIT}
-                          docker run -d -p 8081:80 maszynista119/testing:${GIT_COMMIT}
-                          docker logout
-                        "
+                      def dockerrun = "docker login -u maszynista119 -p ${DOCKERHUB_ACCESS_TOKEN} && docker pull maszynista119/testing:${GIT_COMMIT} && docker run -d -p 8081:80 maszynista119/testing:${GIT_COMMIT} && docker logout"
                       sh "ssh -o StrictHostKeyChecking=no root@157.230.119.113 ${dockerRun}"
 
                 }

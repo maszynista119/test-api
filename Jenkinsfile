@@ -14,12 +14,23 @@ pipeline {
                 echo "kurwy jebany wypierdalac"
             }
         }
+        stage("build docker image") {
+            steps {
+                script {
+                    docker.withRegistry("https://index.docker.io/v1/", "dockerhub") {
+                        def customImage = docker.build("maszynista119/testing:${GIT_COMMIT}")
+
+                        customImage.push()
+                    }
+                }
+            }
+        }
         stage("Deploy docker image") {
             steps {
-                echo "Connecting to remote";
                 sshagent(credentials: ['krzys-remote-app']) {
                       sh '''
-                        ls -l
+                        docker pull maszynista119/testing:${GIT_COMMIT}
+                        docker run -p 8080:80 maszynista119/testing:${GIT_COMMIT}
                       '''
                 }
             }

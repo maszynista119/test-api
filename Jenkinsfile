@@ -14,14 +14,12 @@ pipeline {
                 echo "kurwy jebany wypierdalac"
             }
         }
-        stage("build docker image") {
+        stage("Deploy docker image") {
             steps {
-                script {
-                    docker.withRegistry("https://index.docker.io/v1/", "dockerhub") {
-                        def customImage = docker.build("maszynista119/testing:${GIT_COMMIT}")
-
-                        customImage.push()
-                    }
+                sshagent(credentials: ['krzys-remote-app']) {
+                      sh '''
+                        ls -l
+                      '''
                 }
             }
         }
